@@ -1,10 +1,14 @@
 # MandelbrotSDL
 
-The mandelbrot fractal is implemented in C using a powerful open-source 2D graphics library called SDL - Simple DirectMedia Layer (https://www.libsdl.org/). This project is to learn about the implementation of a mandelbrot fractal program using SDL library using the C programmming language.
+The mandelbrot fractal is implemented in C using a powerful open-source 2D graphics library called SDL - Simple DirectMedia Layer (https://www.libsdl.org/). This project is to learn about the implementation of a mandelbrot fractal program using SDL library using the C programmming language. The color invertion is provided as a user preference within the program which can be changed during runtime to invert the colors before displaying the fractal.
 
-<img src="./resources/normal.jpg"> <br>Mandelbrot Fractal - 50000 iterations (1366x768 resolution) </br></img>
+<img src="./resources/color_normal.jpg"> <br>Mandelbrot Fractal | 4 Colors | 50000 iterations | 1366x768 resolution </br></img>
 
-<img src="./resources/inverted.jpg"> <br>Mandelbrot Fractal (Inverted) - 50000 iterations (1366x768 resolution) </br></img>
+<img src="./resources/color_inverted.jpg"> <br>Mandelbrot Fractal | 4 Colors [Inverted] | 50000 iterations | 1366x768 resolution </br></img>
+
+<img src="./resources/mono_normal.jpg"> <br>Mandelbrot Fractal | 1 Color | 50000 iterations | 1366x768 resolution </br></img>
+
+<img src="./resources/mono_inverted.jpg"> <br>Mandelbrot Fractal | 1 Color  [Inverted] | 50000 iterations | 1366x768 resolution </br></img>
 
 # Algorithm
     for each pixel (Px, Py) on the screen do
