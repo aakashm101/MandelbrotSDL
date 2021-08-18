@@ -18,6 +18,7 @@ const int MAX_ITERATIONS = 500000;
 const int WINDOW_WIDTH_DEFAULT = 1024;
 const int WINDOW_HEIGHT_DEFAULT = 576;
 const int MAX_ITERATIONS_DEFAULT = 1000;
+const int USE_SINGLE_COLOR_DEFAULT = 0;
 const int INVERT_COLORS_DEFAULT = 0;
 
 void setDefaultPreferences(UserPreferences* up)
@@ -26,19 +27,21 @@ void setDefaultPreferences(UserPreferences* up)
 	up->windowHeight = WINDOW_HEIGHT_DEFAULT;
 	up->invertColors = INVERT_COLORS_DEFAULT;
 	up->maxIterations = MAX_ITERATIONS_DEFAULT;
+	up->useSingleColor = USE_SINGLE_COLOR_DEFAULT;
 	return;
 }
 
 void displayPreferences(UserPreferences* up)
 {
 	const char defaultstr[] = "(default)";
-	printf("TIP: Click on the SDL window to close the window.\n\n");
+	printf("TIP: Press Escape while the SDL window is in focus to close the SDL window.\n\n");
 	printf("Current preferences:\n");
 	printf("1.Window width = %d %s\n", up->windowWidth, (up->windowWidth == WINDOW_WIDTH_DEFAULT) ? defaultstr : "");
 	printf("2.Window height = %d %s\n", up->windowHeight, (up->windowHeight == WINDOW_HEIGHT_DEFAULT) ? defaultstr : "");
-	printf("3.Invert Colors = %d %s\n", up->invertColors, (up->invertColors == INVERT_COLORS_DEFAULT) ? defaultstr : "");
-	printf("4.Max Iterations = %d %s\n", up->maxIterations, (up->maxIterations == MAX_ITERATIONS_DEFAULT) ? defaultstr : "");
-	printf("NOTE: By default, the mandelbrot fractal will be plotted in white color on a white background.\n\n");
+	printf("3.Max Iterations = %d %s\n", up->maxIterations, (up->maxIterations == MAX_ITERATIONS_DEFAULT) ? defaultstr : "");
+	printf("4.Invert Colors = %s %s\n", (up->invertColors == 0) ? "NO": "YES", (up->invertColors == INVERT_COLORS_DEFAULT) ? defaultstr : "");
+	printf("5.Use Single Color = %s %s\n", (up->useSingleColor == 0) ? "NO" : "YES", (up->useSingleColor == USE_SINGLE_COLOR_DEFAULT) ? defaultstr : "");
+	printf("NOTE: By default, the mandelbrot fractal will be plotted in different colors on a black background.\n\n");
 	return;
 }
 
@@ -67,7 +70,8 @@ void getUserPreferences(UserPreferences* up)
 			printf("4.Exit\n");
 
 			printf("Enter the option number: ");
-			scanf(" %c", &c);
+			c = getchar();
+			flushInputBuffer();
 			printf("\n");
 		} while (c != '1' && c != '2' && c != '3' && c != '4');
 		printf("\n");
@@ -86,7 +90,8 @@ void getUserPreferences(UserPreferences* up)
 			case '2':
 			{
 				printf("Default preferences set.\n");
-				displayPreferences(up);
+				printf("Press any key...");
+				getchar();
 				break;
 			}
 
@@ -116,83 +121,132 @@ void changePreferences(UserPreferences* up)
 	printf("Enter preference number to change: ");
 	do
 	{
-		scanf(" %c", &c);
-	} while (c != '1' && c != '2' && c != '3' && c != '4');
+		c = getchar();
+		flushInputBuffer();
+	} while (c != '1' && c != '2' && c != '3' && c != '4' && c != '5');
 
 	switch (c)
 	{
 		// If option 1 (Window width), get the window width value from user (If input is invalid use defaults)
-	case '1':
-	{
-		printf("Enter window width [%d to %d]: ", WINDOW_WIDTH_MIN, WINDOW_WIDTH_MAX);
-		scanf(" %d", &temp);
-		if (temp >= WINDOW_WIDTH_MIN && temp <= WINDOW_WIDTH_MAX)
+		case '1':
 		{
-			up->windowWidth = temp;
+			printf("Enter window width [%d to %d]: ", WINDOW_WIDTH_MIN, WINDOW_WIDTH_MAX);
+			scanf(" %d", &temp);
+			flushInputBuffer();
+		
+			if (temp >= WINDOW_WIDTH_MIN && temp <= WINDOW_WIDTH_MAX)
+			{
+				up->windowWidth = temp;
+			}
+			else
+			{
+				printf("Invalid input. Using default value %d\n", WINDOW_WIDTH_DEFAULT);
+				up->windowWidth = WINDOW_WIDTH_DEFAULT;
+				printf("Press any key...");
+				getchar();
+			}
+			break;
 		}
-		else
-		{
-			printf("Invalid input. Using default value %d\n", WINDOW_WIDTH_DEFAULT);
-			up->windowWidth = WINDOW_WIDTH_DEFAULT;
-		}
-		break;
-	}
 
-	// If option 2 (Window height), get the window height value from user (If input is invalid use defaults)
-	case '2':
-	{
-		printf("Enter window height [%d to %d]: ", WINDOW_HEIGHT_MIN, WINDOW_HEIGHT_MAX);
-		scanf(" %d", &temp);
-		if (temp >= WINDOW_HEIGHT_MIN && temp <= WINDOW_HEIGHT_MAX)
+		// If option 2 (Window height), get the window height value from user (If input is invalid use defaults)
+		case '2':
 		{
-			up->windowHeight = temp;
+			printf("Enter window height [%d to %d]: ", WINDOW_HEIGHT_MIN, WINDOW_HEIGHT_MAX);
+			scanf(" %d", &temp);
+			flushInputBuffer();
+		
+			if (temp >= WINDOW_HEIGHT_MIN && temp <= WINDOW_HEIGHT_MAX)
+			{
+				up->windowHeight = temp;
+			}
+			else
+			{
+				printf("Invalid input. Using default value %d\n", WINDOW_HEIGHT_DEFAULT);
+				up->windowHeight = WINDOW_HEIGHT_DEFAULT;
+				printf("Press any key...");
+				getchar();
+			}
+			break;
 		}
-		else
-		{
-			printf("Invalid input. Using default value %d\n", WINDOW_HEIGHT_DEFAULT);
-			up->windowHeight = WINDOW_HEIGHT_DEFAULT;
-		}
-		break;
-	}
 
-	// If option 3 (Invert colors), get yes/no value from user (If input is invalid use defaults)
-	case '3':
-	{
-		printf("Invert Colors? [Y/N]: ");
-		scanf(" %c", &c);
-		if (c == 'Y' || c == 'y')
+		// If option 3 (Max iterations), get the maxIterations value from user (If input is invalid use defaults)
+		case '3':
 		{
-			up->invertColors = 1;
-		}
-		else if (c == 'N' || c == 'n')
-		{
-			up->invertColors = 0;
-		}
-		else
-		{
-			printf("Invalid input. Using default value %s\n", INVERT_COLORS_DEFAULT ? "Y" : "N");
-			up->invertColors = 0;
-		}
-		break;
-	}
+			printf("Enter max iterations [%d to %d]: ", MIN_ITERATIONS, MAX_ITERATIONS);
+			scanf(" %d", &temp);
+			flushInputBuffer();
 
-	// If option 4 (Max iterations), get the maxIterations value from user (If input is invalid use defaults)
-	case '4':
-	{
-		printf("Enter max iterations [%d to %d]: ", MIN_ITERATIONS, MAX_ITERATIONS);
-		scanf(" %d", &temp);
-		if (temp >= MIN_ITERATIONS && temp <= MAX_ITERATIONS)
-		{
-			up->maxIterations = temp;
+			if (temp >= MIN_ITERATIONS && temp <= MAX_ITERATIONS)
+			{
+				up->maxIterations = temp;
+			}
+			else
+			{
+				printf("Invalid input. Using default value %d\n", MAX_ITERATIONS_DEFAULT);
+				up->maxIterations = MAX_ITERATIONS_DEFAULT;
+				printf("Press any key...");
+				getchar();
+			}
+			break;
 		}
-		else
+
+		// If option 4 (Invert colors), get yes/no value from user (If input is invalid use defaults)
+		case '4':
 		{
-			printf("Invalid input. Using default value %d\n", MAX_ITERATIONS_DEFAULT);
-			up->maxIterations = MAX_ITERATIONS_DEFAULT;
+			printf("Invert Colors? [Y/N]: ");
+			c = getchar();
+			flushInputBuffer();
+
+			if (c == 'Y' || c == 'y')
+			{
+				up->invertColors = 1;
+			}
+			else if (c == 'N' || c == 'n')
+			{
+				up->invertColors = 0;
+			}
+			else
+			{
+				printf("Invalid input. Using default value %s\n", INVERT_COLORS_DEFAULT ? "Y" : "N");
+				up->invertColors = 0;
+				printf("Press any key...");
+				getchar();
+			}
+			break;
 		}
-		break;
+
+		// If option 5 (Use single color), get yes/no value from user (If input is invalid use defaults)
+		case '5':
+		{
+			printf("Use Single Color? [Y/N]: ");
+			c = getchar();
+			flushInputBuffer();
+
+			if (c == 'Y' || c == 'y')
+			{
+				up->useSingleColor = 1;
+			}
+			else if (c == 'N' || c == 'n')
+			{
+				up->useSingleColor = 0;
+			}
+			else
+			{
+				printf("Invalid input. Using default value %s\n", INVERT_COLORS_DEFAULT ? "Y" : "N");
+				up->useSingleColor = 0;
+				printf("Press any key...");
+				getchar();
+			}
+			break;
+		}
 	}
-	}
+}
+
+void flushInputBuffer(void)
+{
+	char c;
+	while ((c = getchar()) != '\n' && c != EOF);	// Flush stdin
+	return;
 }
 
 void clearTerminal(void)
