@@ -20,6 +20,7 @@ typedef struct _WindowParameters
 typedef struct _UserPreferences {
     int windowWidth;
     int windowHeight;
+    int useSingleColor;
     int invertColors;
     int maxIterations;
 } UserPreferences;
