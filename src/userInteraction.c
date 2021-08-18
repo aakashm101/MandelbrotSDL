@@ -21,7 +21,7 @@ const int MAX_ITERATIONS_DEFAULT = 1000;
 const int USE_SINGLE_COLOR_DEFAULT = 0;
 const int INVERT_COLORS_DEFAULT = 0;
 
-void setDefaultPreferences(UserPreferences* up)
+void setDefaultPreferences(UserPreferences* const up)
 {
 	up->windowWidth = WINDOW_WIDTH_DEFAULT;
 	up->windowHeight = WINDOW_HEIGHT_DEFAULT;
@@ -31,7 +31,7 @@ void setDefaultPreferences(UserPreferences* up)
 	return;
 }
 
-void displayPreferences(UserPreferences* up)
+void displayPreferences(const UserPreferences* const up)
 {
 	const char defaultstr[] = "(default)";
 	printf("TIP: Press Escape while the SDL window is in focus to close the SDL window.\n\n");
@@ -45,7 +45,7 @@ void displayPreferences(UserPreferences* up)
 	return;
 }
 
-void getUserPreferences(UserPreferences* up)
+void getUserPreferences(UserPreferences* const up)
 {
 	char c;
 	int loop;
@@ -113,7 +113,7 @@ void getUserPreferences(UserPreferences* up)
 	}
 }
 
-void changePreferences(UserPreferences* up)
+void changePreferences(UserPreferences* const up)
 {
 	char c;
 	long temp;

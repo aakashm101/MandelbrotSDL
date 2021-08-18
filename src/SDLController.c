@@ -49,20 +49,20 @@ int initialiseSDL(WindowParameters* const wp)
 	return 0;
 }
 
-int allocateVideoBuffer(WindowParameters* wp)
+int allocateVideoBuffer(WindowParameters* const wp)
 {
 	// Allocate memory for the video buffer
 	wp->videoBuffer = calloc(wp->WINDOW_WIDTH * wp->WINDOW_HEIGHT, sizeof(Uint32));
 	if (!wp->videoBuffer)
 	{
-		printf("Video Buffer memory allocation error.");
+		printf("Video buffer memory allocation error !\n");
 		SDL_Quit();
 		return -1;
 	}
 	return 0;
 }
 
-void updateSDLWindow(WindowParameters* const wp)
+void updateSDLWindow(const WindowParameters* const wp)
 {
 	SDL_UpdateTexture(wp->texture, NULL, wp->videoBuffer, wp->WINDOW_WIDTH * sizeof(Uint32));
 	SDL_RenderCopy(wp->renderer, wp->texture, NULL, NULL);
@@ -70,9 +70,9 @@ void updateSDLWindow(WindowParameters* const wp)
 	return;
 }
 
-void quitSDL(WindowParameters* const wp)
+void quitSDL(WindowParameters* wp)
 {
-	if (!wp->videoBuffer) free(wp->videoBuffer);
+	if (wp->videoBuffer) free(wp->videoBuffer);
 	SDL_DestroyRenderer(wp->renderer);
 	SDL_DestroyWindow(wp->window);
 	SDL_Quit();

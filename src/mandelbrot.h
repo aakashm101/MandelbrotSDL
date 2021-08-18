@@ -1,7 +1,7 @@
 #pragma once
 #include "globals.h"
 
-void processMandelbrot(WindowParameters* wp, UserPreferences* up);
-int mandelbrot(double cr, double ci, int maxIterations);
-inline double mapToReal(int x, double minR, double maxR, const WindowParameters* const wp);
-inline double mapToImaginary(int y, double minI, double maxR, const WindowParameters* const wp);
+int mandelbrot(const double cr, const double ci, const int maxIterations);
+void processMandelbrot(WindowParameters* const wp, const UserPreferences* const up);
+inline double mapToReal(const int x, const double minR, const double maxR, const WindowParameters* const wp);
+inline double mapToImaginary(const int y, const double minI, const double maxI, const WindowParameters* const wp);

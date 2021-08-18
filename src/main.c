@@ -12,6 +12,7 @@ int main(void)
 	WindowParameters wp;
 	UserPreferences up;
 
+	// Show the default preferences and provide an option to change the preferences before starting
 	getUserPreferences(&up);
 	wp.WINDOW_WIDTH = up.windowWidth;
 	wp.WINDOW_HEIGHT = up.windowHeight;
