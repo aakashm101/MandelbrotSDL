@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "SDLController.h"
 
 int initialiseSDL(WindowParameters* const wp)
