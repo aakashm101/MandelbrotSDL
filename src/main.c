@@ -1,5 +1,5 @@
-#include <stdio.h>
 #define SDL_MAIN_HANDLED
+#include <SDL.h>
 #include "SDLController.h"
 #include "userInteraction.h"
 #include "mandelbrot.h"
@@ -42,7 +42,7 @@ int main(void)
 		SDL_Event event;
 		Uint32 frameStart = SDL_GetTicks();
 
-		if (SDL_PollEvent(&event) && event.type == SDL_QUIT || event.button.button == SDL_BUTTON_LEFT) {
+		if (SDL_PollEvent(&event) && event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE) {
 			isRunning = 0;
 		}
 
