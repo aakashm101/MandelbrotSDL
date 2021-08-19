@@ -17,7 +17,7 @@ const int MAX_ITERATIONS = 500000;
 
 const int WINDOW_WIDTH_DEFAULT = 1024;
 const int WINDOW_HEIGHT_DEFAULT = 576;
-const int MAX_ITERATIONS_DEFAULT = 1000;
+const int MAX_ITERATIONS_DEFAULT = 4000;
 const int USE_SINGLE_COLOR_DEFAULT = 0;
 const int INVERT_COLORS_DEFAULT = 0;
 
@@ -118,9 +118,9 @@ void changePreferences(UserPreferences* const up)
 	char c;
 	long temp;
 
-	printf("Enter preference number to change: ");
 	do
 	{
+		printf("Enter preference number to change: ");
 		c = getchar();
 		flushInputBuffer();
 	} while (c != '1' && c != '2' && c != '3' && c != '4' && c != '5');
