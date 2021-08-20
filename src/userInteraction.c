@@ -3,7 +3,7 @@
 #endif
 
 #include <stdio.h>
-#include <limits.h>
+#include <string.h>
 #include "globals.h"
 #include "userInteraction.h"
 
@@ -47,9 +47,9 @@ void displayPreferences(const UserPreferences* const up)
 
 void getUserPreferences(UserPreferences* const up)
 {
+	const char MAIN_OPTIONS[] = { '1', '2', '3', '4' };
 	char c;
 	int loop;
-	long temp;
 
 	setDefaultPreferences(up);
 
@@ -69,11 +69,8 @@ void getUserPreferences(UserPreferences* const up)
 			printf("3.Change preferences.\n");
 			printf("4.Exit\n");
 
-			printf("Enter the option number: ");
-			c = getchar();
-			flushInputBuffer();
-			printf("\n");
-		} while (c != '1' && c != '2' && c != '3' && c != '4');
+			c = getCharacterInput("Enter the option number: ", MAIN_OPTIONS, 4);
+		} while (!strchr(MAIN_OPTIONS, c));
 		printf("\n");
 
 		switch (c)
@@ -90,8 +87,7 @@ void getUserPreferences(UserPreferences* const up)
 			case '2':
 			{
 				printf("Default preferences set.\n");
-				printf("Press any key...");
-				getchar();
+				waitForKeyPress();
 				break;
 			}
 
@@ -115,15 +111,15 @@ void getUserPreferences(UserPreferences* const up)
 
 void changePreferences(UserPreferences* const up)
 {
+	const char PREFERENCE_OPTIONS[] = { '1', '2', '3', '4', '5' };
+	const char YN_OPTIONS[] = { 'Y', 'y', 'N', 'n' };
 	char c;
 	long temp;
 
 	do
 	{
-		printf("Enter preference number to change: ");
-		c = getchar();
-		flushInputBuffer();
-	} while (c != '1' && c != '2' && c != '3' && c != '4' && c != '5');
+		c = getCharacterInput("Enter preference number to change: ", PREFERENCE_OPTIONS, 5);
+	} while (!strchr(PREFERENCE_OPTIONS, c));
 
 	switch (c)
 	{
@@ -131,8 +127,7 @@ void changePreferences(UserPreferences* const up)
 		case '1':
 		{
 			printf("Enter window width [%d to %d]: ", WINDOW_WIDTH_MIN, WINDOW_WIDTH_MAX);
-			scanf(" %d", &temp);
-			flushInputBuffer();
+			scanf(" %4d", &temp);
 		
 			if (temp >= WINDOW_WIDTH_MIN && temp <= WINDOW_WIDTH_MAX)
 			{
@@ -142,8 +137,7 @@ void changePreferences(UserPreferences* const up)
 			{
 				printf("Invalid input. Using default value %d\n", WINDOW_WIDTH_DEFAULT);
 				up->windowWidth = WINDOW_WIDTH_DEFAULT;
-				printf("Press any key...");
-				getchar();
+				waitForKeyPress();
 			}
 			break;
 		}
@@ -153,7 +147,6 @@ void changePreferences(UserPreferences* const up)
 		{
 			printf("Enter window height [%d to %d]: ", WINDOW_HEIGHT_MIN, WINDOW_HEIGHT_MAX);
 			scanf(" %d", &temp);
-			flushInputBuffer();
 		
 			if (temp >= WINDOW_HEIGHT_MIN && temp <= WINDOW_HEIGHT_MAX)
 			{
@@ -163,8 +156,7 @@ void changePreferences(UserPreferences* const up)
 			{
 				printf("Invalid input. Using default value %d\n", WINDOW_HEIGHT_DEFAULT);
 				up->windowHeight = WINDOW_HEIGHT_DEFAULT;
-				printf("Press any key...");
-				getchar();
+				waitForKeyPress();
 			}
 			break;
 		}
@@ -174,7 +166,6 @@ void changePreferences(UserPreferences* const up)
 		{
 			printf("Enter max iterations [%d to %d]: ", MIN_ITERATIONS, MAX_ITERATIONS);
 			scanf(" %d", &temp);
-			flushInputBuffer();
 
 			if (temp >= MIN_ITERATIONS && temp <= MAX_ITERATIONS)
 			{
@@ -184,8 +175,7 @@ void changePreferences(UserPreferences* const up)
 			{
 				printf("Invalid input. Using default value %d\n", MAX_ITERATIONS_DEFAULT);
 				up->maxIterations = MAX_ITERATIONS_DEFAULT;
-				printf("Press any key...");
-				getchar();
+				waitForKeyPress();
 			}
 			break;
 		}
@@ -193,9 +183,7 @@ void changePreferences(UserPreferences* const up)
 		// If option 4 (Invert colors), get yes/no value from user (If input is invalid use defaults)
 		case '4':
 		{
-			printf("Invert Colors? [Y/N]: ");
-			c = getchar();
-			flushInputBuffer();
+			c = getCharacterInput("Invert Colors? [Y/N]: ", YN_OPTIONS, 4);
 
 			if (c == 'Y' || c == 'y')
 			{
@@ -209,8 +197,7 @@ void changePreferences(UserPreferences* const up)
 			{
 				printf("Invalid input. Using default value %s\n", INVERT_COLORS_DEFAULT ? "Y" : "N");
 				up->invertColors = 0;
-				printf("Press any key...");
-				getchar();
+				waitForKeyPress();
 			}
 			break;
 		}
@@ -218,9 +205,7 @@ void changePreferences(UserPreferences* const up)
 		// If option 5 (Use single color), get yes/no value from user (If input is invalid use defaults)
 		case '5':
 		{
-			printf("Use Single Color? [Y/N]: ");
-			c = getchar();
-			flushInputBuffer();
+			c = getCharacterInput("Use Single Color? [Y/N]: ", YN_OPTIONS, 4);
 
 			if (c == 'Y' || c == 'y')
 			{
@@ -234,29 +219,61 @@ void changePreferences(UserPreferences* const up)
 			{
 				printf("Invalid input. Using default value %s\n", INVERT_COLORS_DEFAULT ? "Y" : "N");
 				up->useSingleColor = 0;
-				printf("Press any key...");
-				getchar();
+				waitForKeyPress();
 			}
 			break;
 		}
 	}
 }
 
-void flushInputBuffer(void)
+char getCharacterInput(const char* const prompt, const char* const options, const int optionCount)
 {
 	char c;
-	while ((c = getchar()) != '\n' && c != EOF);	// Flush stdin
+	char line[256];
+
+	while (1)
+	{
+		printf("%s", prompt);
+		if (fgets(line, sizeof(line), stdin))
+		{
+			// If there is a newline character at the beginning in the stdin, read the input again
+			if (line[0] == '\n')
+			{
+				fgets(line, sizeof(line), stdin);
+			}
+
+			// Check whether the input option is in predefined options
+			if (sscanf(line, " %c", &c) == 1)
+			{
+				for (int i = 0; i < optionCount; i++)
+				{
+					// If present, return the character. If not, ask the user to enter the input again
+					if (c == options[i])
+					{
+						return c;
+					}
+				}
+			}
+		}
+		printf("Invalid Input !\n");
+	}
+}
+
+inline void waitForKeyPress(void)
+{
+	printf("Press any key...");
+	getchar();
 	return;
 }
 
-void clearTerminal(void)
+inline void clearTerminal(void)
 {
 	#ifdef _WIN32
-		system("cls");
+	system("cls");
 	#endif // _WIN32
 
 	#ifdef linux
-		system("clear");
+	system("clear");
 	#endif // linux
 	return;
 }
