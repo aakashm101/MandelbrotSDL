@@ -1,10 +1,13 @@
 #pragma once
 #include "globals.h"
 
-void setDefaultPreferences(UserPreferences* const up);
-void displayPreferences(const UserPreferences* const up);
+static void setDefaultPreferences(UserPreferences* const up);
+static void displayPreferences(const UserPreferences* const up);
+static void displayMainUserPreferences(void);
+static void changePreferences(UserPreferences* const up);
+static void waitForKeyPress(void);
+static void clearTerminal(void);
+static int getIntUserChoice(const char* const prompt, const int* const options, const int noOfOptions);
+static int getYesNoUserChoice(const char* const prompt);
+
 void getUserPreferences(UserPreferences* const up);
-void changePreferences(UserPreferences* const up);
-char getCharacterInput(const char* const prompt, const char* const options, const int optionCount);
-void waitForKeyPress(void);
-void clearTerminal(void);
