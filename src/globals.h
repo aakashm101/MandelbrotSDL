@@ -1,6 +1,6 @@
+#pragma once
 #include <SDL.h>
 
-#pragma once
 typedef struct _fComplex 
 { 
     float re; 
