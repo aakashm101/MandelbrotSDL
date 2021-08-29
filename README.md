@@ -41,7 +41,7 @@ Source: https://en.wikipedia.org/wiki/Mandelbrot_set
 ## Linux (Ubuntu and Ubuntu based linux distributions):
 1. Install SDL development libraries from repository
 
-        sudo apt install libsd2-dev
+        sudo apt install libsdl2-dev
 2. Compile the source code
 
         gcc *.c -o mandelbrotSDL $(pkg-config --cflags --libs sdl2)
