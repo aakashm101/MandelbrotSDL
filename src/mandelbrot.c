@@ -3,7 +3,7 @@
 #include "globals.h"
 #include "mandelbrot.h"
 
-const Uint32 PALETTE[] =
+static const Uint32 PALETTE[] =
 {
 	0x000000, 0xff3242, 0xff3a40, 0xff403d, 0xff473b, 0xff4d38, 0xff5335, 0xff5932,
 	0xff5f2f, 0xff652c, 0xff6b29, 0xff7026, 0xff7523, 0xff7b1f, 0xff801b, 0xff8517,
@@ -12,7 +12,7 @@ const Uint32 PALETTE[] =
 	0xfcd903, 0xfade0c, 0xf8e215, 0xf6e71c, 0xf4eb23, 0xf1f029, 0xeff530, 0xecf936
 };
 
-const int PALETTE_SIZE = sizeof(PALETTE) / sizeof(Uint32);
+static const int PALETTE_SIZE = sizeof(PALETTE) / sizeof(Uint32);
 
 void processMandelbrot(WindowParameters* const wp, const UserPreferences* const up) 
 {
@@ -69,17 +69,17 @@ void processMandelbrot(WindowParameters* const wp, const UserPreferences* const 
 	return;
 }
 
-inline double mapToReal(const int x, const double minR, const double maxR, const WindowParameters* const wp)
+inline static double mapToReal(const int x, const double minR, const double maxR, const WindowParameters* const wp)
 {
 	return x * ((maxR - minR) / wp->WINDOW_WIDTH) + minR;
 }
 
-inline double mapToImaginary(const int y, const double minI, const double maxI, const WindowParameters* const wp)
+inline static double mapToImaginary(const int y, const double minI, const double maxI, const WindowParameters* const wp)
 {
 	return y * ((maxI - minI) / wp->WINDOW_HEIGHT) + minI;
 }
 
-int mandelbrot(const double cr, const double ci, const int maxIterations)
+static int mandelbrot(const double cr, const double ci, const int maxIterations)
 {
 	int iteration = 0;
 	double zr = 0, zi = 0;
