@@ -4,9 +4,12 @@ The mandelbrot fractal is implemented in C using a powerful open-source 2D graph
 
 <img src="./resources/color_normal.jpg"> <br>Mandelbrot Fractal | Color Gradient | 50000 iterations | 1366x768 resolution </br></img>
 
+
 <img src="./resources/color_inverted.jpg"> <br>Mandelbrot Fractal | Color Gradient [Inverted] | 50000 iterations | 1366x768 resolution </br></img>
 
+
 <img src="./resources/mono_normal.jpg"> <br>Mandelbrot Fractal | 1 Color | 50000 iterations | 1366x768 resolution </br></img>
+
 
 <img src="./resources/mono_inverted.jpg"> <br>Mandelbrot Fractal | 1 Color  [Inverted] | 50000 iterations | 1366x768 resolution </br></img>
 
@@ -30,14 +33,23 @@ The mandelbrot fractal is implemented in C using a powerful open-source 2D graph
 Source: https://en.wikipedia.org/wiki/Mandelbrot_set
 
 # Build Instructions
+## Windows
+1. Download the Windows SDL development libraries (Visual C++ libraries) from https://www.libsdl.org/download-2.0.php, extract the zip file to the same directory where the source files are present.
+2. Configure the SDL include directories and library directories for the compiler and linker in Visual Studio 2019.
+3. Switch to Release configuration and build the project.
 
- 1. Download the Windows SDL development libraries (Visual C++ libraries) from https://www.libsdl.org/download-2.0.php, extract the zip file to the same directory where the source files are present.
- 3. Configure the SDL include directories and library directories for the compiler and linker in Visual Studio 2019.
- 4. Switch to Release configuration and build the project.
+## Linux (Ubuntu and Ubuntu based linux distributions):
+1. Install SDL development libraries from repository
 
-## Downloads:
-The compiled binaries are provided in bin folder. 
+        sudo apt install libsd2-dev
+2. Compile the source code
 
-32-bit binary and DLL for Windows: [Download](https://github.com/aakashm101/MandelbrotSDL/tree/main/bin/x86)
+        gcc *.c -o mandelbrotSDL $(pkg-config --cflags --libs sdl2)
+3. Run the program
 
-64-bit binary and DLL for Windows: [Download](https://github.com/aakashm101/MandelbrotSDL/tree/main/bin/x64)
+        ./mandelbrotSDL
+
+# Downloads:
+* 32-bit EXE and DLL for Windows: [Download](https://github.com/aakashm101/MandelbrotSDL/tree/main/bin/x86)
+
+* 64-bit EXE and DLL for Windows: [Download](https://github.com/aakashm101/MandelbrotSDL/tree/main/bin/x64)
